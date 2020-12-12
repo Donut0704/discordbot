@@ -1,1 +1,1 @@
-worker: pythonbot/complete bot.py
+worker: python complet bot.py
