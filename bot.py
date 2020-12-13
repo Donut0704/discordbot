@@ -33,7 +33,7 @@ async def on_ready():
 async def search_gifs(query):
     try:
         response = api_instance.gifs_search_get(
-            giphy_token, query, limit=3, rating='g')
+            giphy_token, query, limit=100, rating='g')
         lst = list(response.data)
         gif = random.choices(lst)
 
