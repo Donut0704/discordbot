@@ -67,7 +67,8 @@ async def nine_nine(ctx):
 
 
 @bot.command(name='simp', help='Zegt hoe simp je bent')
-async def simp(ctx):
+async def simp(ctx, user: discord.Member):
+
     simprate = random.choice(range(0, 101))
     if simprate > 0 and simprate < 30:
         answer = " heeft gelukkige tijden. Zelf gaat hij weinig om met jongens/meisjes. Ben je zeker gelukkig?"
@@ -78,5 +79,69 @@ async def simp(ctx):
     if simprate >= 80 and simprate <= 100:
         answer = 'is te druk bezig met zijn/haar liefdesleven. Ga eens om met je vrienden.'
 
-    await ctx.send(ctx.message.author.mention + answer+" simprate: " + str(simprate) + "%")
+    await ctx.send(user.mention + answer+" simprate: " + str(simprate) + "%")
+
+
+@simp.error
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        simprate = random.choice(range(0, 101))
+        if simprate > 0 and simprate < 30:
+            answer = " heeft gelukkige tijden. Zelf gaat hij weinig om met meisjes. Ben je zeker gelukkig?"
+
+        if simprate >= 30 and simprate <= 80:
+            answer = ' is gezond en in evenwicht.'
+
+        if simprate >= 80 and simprate <= 100:
+            answer = ' is te druk bezig met zijn liefdesleven. Ga eens om met je vrienden.'
+
+        await ctx.send(ctx.message.author.mention + answer+" Simprate: " + str(simprate) + "%")
+
+
+@bot.command(name='Bjarnismyking', help='Zegt jou wie de koning is')
+async def bjarnismyking(ctx):
+    await ctx.send(ctx.message.author.mention + " je weet toch wel wie de baas is hier.")
+
+
+@bot.command(name='Bjarn', help="Zegt random zinnen")
+async def Bjarn(ctx):
+    bjarn_quotes = [
+        'Kerst komt eraan, ben je al op zoek naar je cadeautjes? Vergeet ze niet, als je er geen hebt, krijg je zelf geen cadeautjes.',
+        'Jouw koningin is toegekomen.',
+        'Hoe is je dag?',
+        'Ja'
+    ]
+    antwoord = random.choice(bjarn_quotes)
+    await ctx.send(antwoord)
+
+
+@bot.command(name='gay', help="Zegt hoe gay je bent")
+async def gay(ctx, user: discord.Member):
+    gay_quotes = [
+        ' ha gaaayyyy!',
+        ' is gay van het maximum level. Hij simpst zelfs voor jongens.',
+        ' heeft wat gay trekjes, maar hij valt niet op jongens.',
+        ' is hetero. Niets meer om te zeggen.'
+        ' heef gewoon een gay naam.'
+        ' is bi. Hij moet echt weten wat hij wilt.'
+    ]
+    gayanswer = random.choice(gay_quotes)
+    await ctx.send(user.mention + gayanswer)
+
+
+@gay.error
+async def on_command_error(ctx, error):
+
+    gay_quotes = [
+        ' ha gaaayyyy!',
+        ' is gay van het maximum level. Hij simpst zelfs voor jongens.',
+        ' heeft wat gay trekjes, maar hij valt niet op jongens.',
+        ' is hetero. Niets meer om te zeggen.'
+        ' heef gewoon een gay naam.'
+        ' is bi. Hij moet echt weten wat hij wilt.'
+    ]
+    gayanswer = random.choice(gay_quotes)
+    await ctx.send(ctx.message.author.mention + gayanswer)
+
+
 bot.run(TOKEN)
