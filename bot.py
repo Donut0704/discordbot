@@ -1,16 +1,22 @@
 # bot.py
+# gif
+import giphy_client
+from giphy_client.rest import ApiException
+from pprint import pprint
+# discord
 from discord.ext import commands
 import os
 import random
 from dotenv import load_dotenv
 import discord
 
+api_instance = giphy_client.DefaultApi()
 
 # 1
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-
+giphy_token = os.getenv('giphy_api_key')
 # 2
 intents = discord.Intents.default()
 intents.members = True
@@ -22,6 +28,19 @@ bot = commands.Bot(command_prefix='!k ',
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='jouw problemen'))
     print(f'{bot.user.name} has connected to Discord!')
+
+
+async def search_gifs(query):
+    try:
+        response = api_instance.gifs_search_get(
+            giphy_token, query, limit=3, rating='g')
+        lst = list(response.data)
+        gif = random.choices(lst)
+
+        return gif[0].url
+
+    except ApiException as e:
+        return "Exception when calling DefaultApi->gifs_search_get: %s\n" % e
 
 
 @bot.event
@@ -121,8 +140,8 @@ async def gay(ctx, user: discord.Member):
         ' ha gaaayyyy!',
         ' is gay van het maximum level. Hij simpst zelfs voor jongens.',
         ' heeft wat gay trekjes, maar hij valt niet op jongens.',
-        ' is hetero. Niets meer om te zeggen.'
-        ' heef gewoon een gay naam.'
+        ' is hetero. Niets meer om te zeggen.',
+        ' heef gewoon een gay naam.',
         ' is bi. Hij moet echt weten wat hij wilt.'
     ]
     gayanswer = random.choice(gay_quotes)
@@ -136,12 +155,17 @@ async def on_command_error(ctx, error):
         ' ha gaaayyyy!',
         ' is gay van het maximum level. Hij simpst zelfs voor jongens.',
         ' heeft wat gay trekjes, maar hij valt niet op jongens.',
-        ' is hetero. Niets meer om te zeggen.'
-        ' heef gewoon een gay naam.'
+        ' is hetero. Niets meer om te zeggen.',
+        ' heef gewoon een gay naam.',
         ' is bi. Hij moet echt weten wat hij wilt.'
     ]
     gayanswer = random.choice(gay_quotes)
     await ctx.send(ctx.message.author.mention + gayanswer)
 
+
+@bot.command(name='randomgif', help='Zoekt random gifs op giphy.')
+async def magic_eight_ball(ctx):
+    gif = await search_gifs('random')
+    await ctx.send('Gif URL : ' + gif)
 
 bot.run(TOKEN)
