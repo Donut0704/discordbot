@@ -70,7 +70,7 @@ async def nine_nine(ctx):
 async def simp(ctx):
     simprate = random.choice(range(0, 101))
     if simprate > 0 and simprate < 30:
-        answer = " heeft gelukkige tijden. Zelf gaat hij weinig om met meisejes."
+        answer = " heeft gelukkige tijden. Zelf gaat hij weinig om met jongens/meisjes. Ben je zeker gelukkig?"
 
     if simprate >= 30 and simprate <= 80:
         answer = ' is gezond en in evenwicht.'
