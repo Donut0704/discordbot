@@ -20,6 +20,7 @@ bot = commands.Bot(command_prefix='!k ',
 
 @bot.event
 async def on_ready():
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='jouw problemen'))
     print(f'{bot.user.name} has connected to Discord!')
 
 
@@ -61,7 +62,21 @@ async def nine_nine(ctx):
             'no doubt no doubt no doubt no doubt.'
         ),
     ]
-
     response = random.choice(brooklyn_99_quotes)
     await ctx.send(response)
+
+
+@bot.command(name='simp', help='Zegt hoe simp je bent')
+async def simp(ctx):
+    simprate = random.choice(range(0, 101))
+    if simprate > 0 and simprate < 30:
+        answer = " heeft gelukkige tijden. Zelf gaat hij weinig om met meisejes."
+
+    if simprate >= 30 and simprate <= 80:
+        answer = ' is gezond en in evenwicht.'
+
+    if simprate >= 80 and simprate <= 100:
+        answer = 'is te druk bezig met zijn/haar liefdesleven. Ga eens om met je vrienden.'
+
+    await ctx.send(ctx.message.author.mention + answer+" simprate: " + str(simprate) + "%")
 bot.run(TOKEN)
