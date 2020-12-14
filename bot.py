@@ -98,7 +98,9 @@ async def simp(ctx, user: discord.Member):
     if simprate >= 80 and simprate <= 100:
         answer = 'is te druk bezig met zijn/haar liefdesleven. Ga eens om met je vrienden.'
 
-    await ctx.send(user.mention + answer+" simprate: " + str(simprate) + "%")
+    embedVar = discord.Embed(
+        title="Simp machine", description=user.mention + answer+" simprate: " + str(simprate) + "%", color=0xF1F014)
+    await ctx.channel.send(embed=embedVar)
 
 
 @simp.error
@@ -113,8 +115,9 @@ async def on_command_error(ctx, error):
 
         if simprate >= 80 and simprate <= 100:
             answer = ' is te druk bezig met zijn liefdesleven. Ga eens om met je vrienden.'
-
-        await ctx.send(ctx.message.author.mention + answer+" Simprate: " + str(simprate) + "%")
+        embedVar = discord.Embed(
+            title="Simp machine", description=ctx.message.author.mention + answer+" Simprate: " + str(simprate) + "%", color=0xF1F014)
+        await ctx.channel.send(embed=embedVar)
 
 
 @bot.command(name='Bjarnismyking', help='Zegt jou wie de koning is')
@@ -161,6 +164,36 @@ async def on_command_error(ctx, error):
     ]
     gayanswer = random.choice(gay_quotes)
     await ctx.send(ctx.message.author.mention + gayanswer)
+
+
+@bot.command(name='fortnite', help='Zegt hoe verslaafd je bent aan fortnite.')
+async def fortnite(ctx, user: discord.Member):
+    fortnite_quotes = [
+        ' speelde fortnite toen het nog een hype was. Hij verwijderde het spel en heeft nu een betere leven.',
+        ' is totaal niet verslaafd aan fortnite. Ik denk dat hij zelfs niet eens weet wat het is.',
+        ' heeft het spel nooit gewild dat het spel beston en zal het nooit spelen. Hij denkt dat het een schaamte is voor de hele gamingworld.',
+        ' is verslaafd aan fortnite maar aan het hoogste level. Hij spendeert de hele dag een deze game, terwijl zijn vrienden Minecraft samenspelen en fun hebben. Hij denkt zelfs dat hij een fartnite cup zal winnen.',
+        ' wilt het spel spelen als hij kan spelen met zijn vrienden, maar wou nooitt alleen spelen. Dan speelt hij iets anders met zijn vrienden of belt hij met meisjes omdat hij dat ook leuk vind.',
+    ]
+    fortniteanswer = random.choice(fortnite_quotes)
+    embedVar = discord.Embed(
+        title="Fortnite verslaving", description=user.mention + fortniteanswer, color=0xF1F014)
+    await ctx.channel.send(embed=embedVar)
+
+
+@fortnite.error
+async def on_command_error(ctx, error):
+    fortnite_quotes = [
+        ' speelde fortnite toen het nog een hype was. Hij verwijderde het spel en heeft nu een betere leven.',
+        ' is totaal niet verslaafd aan fortnite. Ik denk dat hij zelfs niet eens weet wat het is.',
+        ' heeft het spel nooit gewild dat het spel beston en zal het nooit spelen. Hij denkt dat het een schaamte is voor de hele gamingworld.',
+        ' is verslaafd aan fortnite maar aan het hoogste level. Hij spendeert de hele dag een deze game, terwijl zijn vrienden Minecraft samenspelen en fun hebben. Hij denkt zelfs dat hij een fartnite cup zal winnen.',
+        ' wilt het spel spelen als hij kan spelen met zijn vrienden, maar wou nooit alleen spelen. Dan speelt hij iets anders met zijn vrienden of belt hij met meisjes omdat hij dat ook leuk vind.',
+    ]
+    fortniteanswer = random.choice(fortnite_quotes)
+    embedVar = discord.Embed(
+        title="Fortnite verslaving", description=ctx.message.author.mention + fortniteanswer, color=0xF1F014)
+    await ctx.channel.send(embed=embedVar)
 
 
 @bot.command(name='randomgif', help='Zoekt random gifs op giphy.')
