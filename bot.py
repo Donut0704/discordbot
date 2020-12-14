@@ -49,11 +49,12 @@ async def on_member_join(member):
     channel = bot.get_channel(775697365662302222)
     await channel.send(f'Hoi {member.mention}, welkom Bij Bjarn&co!')
 
-
+'''
 @ bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send('Ongeldige command.')
+'''
 
 
 @ bot.command(name='roll_dice', help='Simuleert een dobbelsteen.')
@@ -186,7 +187,7 @@ async def on_command_error(ctx, error):
     fortnite_quotes = [
         ' speelde fortnite toen het nog een hype was. Hij verwijderde het spel en heeft nu een betere leven.',
         ' is totaal niet verslaafd aan fortnite. Ik denk dat hij zelfs niet eens weet wat het is.',
-        ' heeft het spel nooit gewild dat het spel beston en zal het nooit spelen. Hij denkt dat het een schaamte is voor de hele gamingworld.',
+        ' heeft het spel nooit gewild dat het spel bestond en zal het nooit spelen. Hij denkt dat het een schaamte is voor de hele gamingworld.',
         ' is verslaafd aan fortnite maar aan het hoogste level. Hij spendeert de hele dag een deze game, terwijl zijn vrienden Minecraft samenspelen en fun hebben. Hij denkt zelfs dat hij een fartnite cup zal winnen.',
         ' wilt het spel spelen als hij kan spelen met zijn vrienden, maar wou nooit alleen spelen. Dan speelt hij iets anders met zijn vrienden of belt hij met meisjes omdat hij dat ook leuk vind.',
     ]
@@ -197,8 +198,52 @@ async def on_command_error(ctx, error):
 
 
 @bot.command(name='randomgif', help='Zoekt random gifs op giphy.')
-async def magic_eight_ball(ctx):
+async def randomgif(ctx):
     gif = await search_gifs('random')
     await ctx.send('Gif URL : ' + gif)
+
+
+@bot.command(name='score', help='Geeft server score weer.')
+async def score(ctx):
+    score = random.choice(range(0, 101))
+    embedVar = discord.Embed(
+        title="Momentele server score", description=ctx.message.author.mention+" ,jouw server score is: "+str(score) + "%", color=0xF1F014)
+    await ctx.channel.send(embed=embedVar)
+
+
+@bot.command(name='sortinghat', help='Zegt in welke Zweinstein afdeling bent')
+async def sortinghat(ctx):
+    hat_quotes = [
+        'Deze was een moeilijke.',
+        'Ah, die familie ken ik.',
+    ]
+    sorting_quotes = [
+        'GRIFFOENDOR!',
+        'ZWADDERICH!',
+        'HUFFELPUF!',
+        'RAVENKLAUW!'
+    ]
+
+    titel = random.choice(hat_quotes)
+    sorting = random.choice(sorting_quotes)
+    if sorting == 'GRIFFOENDOR!':
+        embedVar = discord.Embed(
+            title=titel, description=ctx.message.author.mention+" , jij bent: "+sorting, color=0xF72006)
+        await ctx.channel.send(embed=embedVar)
+
+    if sorting == 'ZWADDERICH!':
+        embedVar = discord.Embed(
+            title=titel, description=ctx.message.author.mention+" , jij bent: "+sorting, color=0x24CD1D)
+        await ctx.channel.send(embed=embedVar)
+
+    if sorting == 'HUFFELPUF!':
+        embedVar = discord.Embed(
+            title=titel, description=ctx.message.author.mention+" , jij bent: "+sorting, color=0xFBFA00)
+        await ctx.channel.send(embed=embedVar)
+
+    if sorting == 'RAVENKLAUW!':
+        embedVar = discord.Embed(
+            title=titel, description=ctx.message.author.mention+" , jij bent: "+sorting, color=0x0061FB)
+        await ctx.channel.send(embed=embedVar)
 
 bot.run(TOKEN)
