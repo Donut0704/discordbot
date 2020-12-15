@@ -17,6 +17,7 @@ api_instance = giphy_client.DefaultApi()
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 giphy_token = os.getenv('giphy_api_key')
+CHAT_CHANNEL = os.getenv('chat_channel')
 # 2
 intents = discord.Intents.default()
 intents.members = True
@@ -45,16 +46,32 @@ async def search_gifs(query):
 
 @bot.event
 async def on_member_join(member):
+    await member.create_dm()
+    await member.dm_channel.send(
+        f'''    Hey {member.name} ,  welcome to my server. My name is Bjarn and I am the king here. ' 
+            I\'m sure you will respect the rules. Don't forget to read them. ' 
+            Together with my moderators I will try to make the best server. '
+            I hope you will enjoy your time here. ' 
+            Greetings your king 
+            Bjarn & CO'
+            '''
+    )
 
-    channel = bot.get_channel(775697365662302222)
-    await channel.send(f'Hoi {member.mention}, welkom Bij Bjarn&co!')
 
-'''
+@bot.event
+async def on_member_remove(member):
+    channel = bot.get_channel(int(CHAT_CHANNEL))
+    embedVar = discord.Embed(
+        title="Player left", description=member.mention+', heeft net de server verlaten, wat een loser.'
+        + ' Hij zal nu een slecht leven hebben. Hij zal de hele dag huilen omdat hij deze fout heeft gemaakt'
+        + ' Ik hoop dat hij voor hem blijft leven en dat hij misschien de uitnodigingslink krijgt. Dat was het', color=0xF1F014)
+    await channel.send(embed=embedVar)
+
+
 @ bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send('Ongeldige command.')
-'''
 
 
 @ bot.command(name='roll_dice', help='Simuleert een dobbelsteen.')
@@ -173,8 +190,8 @@ async def fortnite(ctx, user: discord.Member):
         ' speelde fortnite toen het nog een hype was. Hij verwijderde het spel en heeft nu een betere leven.',
         ' is totaal niet verslaafd aan fortnite. Ik denk dat hij zelfs niet eens weet wat het is.',
         ' heeft het spel nooit gewild dat het spel beston en zal het nooit spelen. Hij denkt dat het een schaamte is voor de hele gamingworld.',
-        ' is verslaafd aan fortnite maar aan het hoogste level. Hij spendeert de hele dag een deze game, terwijl zijn vrienden Minecraft samenspelen en fun hebben. Hij denkt zelfs dat hij een fartnite cup zal winnen.',
-        ' wilt het spel spelen als hij kan spelen met zijn vrienden, maar wou nooitt alleen spelen. Dan speelt hij iets anders met zijn vrienden of belt hij met meisjes omdat hij dat ook leuk vind.',
+        ' is verslaafd aan fortnite maar aan het hoogste level. Hij spendeert de hele dag een deze game, terwijl zijn vrienden Minecraft samenspelen en fun hebben. Hij denkt zelfs dat hij een fortnite cup zal winnen.',
+        ' wilt het spel spelen als hij het kan spelen met zijn vrienden, maar wou nooitt alleen spelen. Anders speelt hij iets anders met zijn vrienden of belt hij met meisjes omdat hij dat ook leuk vind.',
     ]
     fortniteanswer = random.choice(fortnite_quotes)
     embedVar = discord.Embed(
@@ -188,8 +205,8 @@ async def on_command_error(ctx, error):
         ' speelde fortnite toen het nog een hype was. Hij verwijderde het spel en heeft nu een betere leven.',
         ' is totaal niet verslaafd aan fortnite. Ik denk dat hij zelfs niet eens weet wat het is.',
         ' heeft het spel nooit gewild dat het spel bestond en zal het nooit spelen. Hij denkt dat het een schaamte is voor de hele gamingworld.',
-        ' is verslaafd aan fortnite maar aan het hoogste level. Hij spendeert de hele dag een deze game, terwijl zijn vrienden Minecraft samenspelen en fun hebben. Hij denkt zelfs dat hij een fartnite cup zal winnen.',
-        ' wilt het spel spelen als hij kan spelen met zijn vrienden, maar wou nooit alleen spelen. Dan speelt hij iets anders met zijn vrienden of belt hij met meisjes omdat hij dat ook leuk vind.',
+        ' is verslaafd aan fortnite maar aan het hoogste level. Hij spendeert de hele dag een deze game, terwijl zijn vrienden Minecraft samenspelen en fun hebben. Hij denkt zelfs dat hij een fortnite cup zal winnen.',
+        ' wilt het spel spelen als hij het kan spelen met zijn vrienden, maar wou nooit alleen spelen. Anders speelt hij iets anders met zijn vrienden of belt hij met meisjes omdat hij dat ook leuk vind.',
     ]
     fortniteanswer = random.choice(fortnite_quotes)
     embedVar = discord.Embed(
@@ -212,7 +229,43 @@ async def score(ctx):
 
 
 @bot.command(name='sortinghat', help='Zegt in welke Zweinstein afdeling bent')
-async def sortinghat(ctx):
+async def sortinghat(ctx, user: discord.Member):
+    hat_quotes = [
+        'Deze was een moeilijke.',
+        'Ah, die familie ken ik.',
+    ]
+    sorting_quotes = [
+        'GRIFFOENDOR!',
+        'ZWADDERICH!',
+        'HUFFELPUF!',
+        'RAVENKLAUW!'
+    ]
+
+    titel = random.choice(hat_quotes)
+    sorting = random.choice(sorting_quotes)
+    if sorting == 'GRIFFOENDOR!':
+        embedVar = discord.Embed(
+            title=titel, description=user.mention+" , jij bent: "+sorting, color=0xF72006)
+        await ctx.channel.send(embed=embedVar)
+
+    if sorting == 'ZWADDERICH!':
+        embedVar = discord.Embed(
+            title=titel, description=user.mention+" , jij bent: "+sorting, color=0x24CD1D)
+        await ctx.channel.send(embed=embedVar)
+
+    if sorting == 'HUFFELPUF!':
+        embedVar = discord.Embed(
+            title=titel, description=user.mention+" , jij bent: "+sorting, color=0xFBFA00)
+        await ctx.channel.send(embed=embedVar)
+
+    if sorting == 'RAVENKLAUW!':
+        embedVar = discord.Embed(
+            title=titel, description=user.mention+" , jij bent: "+sorting, color=0x0061FB)
+        await ctx.channel.send(embed=embedVar)
+
+
+@sortinghat.error
+async def on_command_error(ctx, error):
     hat_quotes = [
         'Deze was een moeilijke.',
         'Ah, die familie ken ik.',
@@ -245,5 +298,27 @@ async def sortinghat(ctx):
         embedVar = discord.Embed(
             title=titel, description=ctx.message.author.mention+" , jij bent: "+sorting, color=0x0061FB)
         await ctx.channel.send(embed=embedVar)
+
+
+@bot.command(name='sus', help='Verdenk anderen hiermee.')
+async def sus(ctx, user: discord.Member):
+    sus_quotes = [
+        ' is totaal niet sus. Wat ben je aan het denken ,gast. Hij is de meest zachtaardigste persoon in de wereld. Hij kan niet eens liegen.',
+        ' kan sus zijn, maar ik denk van niet.',
+        ' vertrouw hem niet. Hij doet alleen wat goed is voor hem.',
+        ' is kinda sus.',
+        ' kan alleen sus zijn in Among Us.',
+        ' gaat je binnenkort verraden. Hij is nogal sus.',
+        ' ziet er misschien sus, maar dat is juist maar omdat hij snel gestrest is.'
+    ]
+    susanswer = random.choice(sus_quotes)
+    embedVar = discord.Embed(
+        title='Sus rate', description=user.mention + susanswer, color=0xF1F014)
+    await ctx.channel.send(embed=embedVar)
+
+
+@sus.error
+async def on_command_error(ctx, error):
+    await ctx.channel.send(ctx.message.author.mention + ", je kunt toch niet jezelf verdenken?")
 
 bot.run(TOKEN)
