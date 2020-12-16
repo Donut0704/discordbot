@@ -20,6 +20,7 @@ giphy_token = os.getenv('giphy_api_key')
 CHAT_CHANNEL = os.getenv('chat_channel')
 RULES_CHANNEL = os.getenv('rules_channel')
 LINK = os.getenv('link')
+ROLE = os.getenv('role')
 # 2
 intents = discord.Intents.default()
 intents.members = True
@@ -50,11 +51,11 @@ async def search_gifs(query):
 async def on_member_join(member):
     await member.create_dm()
     await member.dm_channel.send(
-        f'''    Hey {member.name} ,  welcome to my server. My name is Bjarn and I am the king here. ' 
-            I\'m sure you will respect the rules. Don't forget to read them. ' 
+        f'''    Hey {member.name} ,  welcome to my server. My name is Bjarn and I am the king here. '
+            I\'m sure you will respect the rules. Don't forget to read them. '
             Together with my moderators I will try to make the best server. '
-            I hope you will enjoy your time here. ' 
-            Greetings your king 
+            I hope you will enjoy your time here. '
+            Greetings your king
             Bjarn & CO'
             '''
     )
@@ -69,12 +70,11 @@ async def on_member_remove(member):
         + ' Ik hoop dat hij voor hem blijft leven en dat hij misschien de uitnodigingslink krijgt. Dat was het', color=0xF1F014)
     await channel.send(embed=embedVar)
 
-'''
+
 @ bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send('Ongeldige command.')
-'''
 
 
 @ bot.command(name='roll_dice', help='Simuleert een dobbelsteen.')
@@ -336,5 +336,31 @@ async def rules(ctx):
         title='The rules', description="Je kunt de regels vinden in <#"+RULES_CHANNEL+">. Vergeet niet te checken.", color=0xF1F014)
     await ctx.channel.send(embed=embedVar)
 
+
+@bot.command(name='loser', help='Een toffe command.')
+async def newrole(ctx):
+    role = ctx.guild.get_role(int(ROLE))
+    await ctx.author.add_roles(role)
+    await ctx.send(ctx.message.author.mention+', jij bent een loser! Waarom probeerde je deze command? Nu heb je de loser role.')
+
+
+@bot.command(name='execute', help='iemand executeren')
+async def execute(ctx, user: discord.Member):
+    executeanswer = random.choice(range(0, 2))
+    if executeanswer == 1:
+        await ctx.send(user.mention+' is een goed persoon.  Ik kan dit niet tolereren.\n \n' +
+                       ctx.message.author.mention + ' is gearresteerd door de poltie')
+    else:
+        await ctx.send(user.mention+' will be executed soon. I am making the electric chair ready.')
+
+
+@execute.error
+async def on_command_error(ctx, error):
+    executeanswer = random.choice(range(0, 2))
+    if executeanswer == 1:
+        await ctx.send(' is een goed persoon.  Ik kan dit niet tolereren.\n \n' +
+                       ctx.message.author.mention + ' is gearresteerd door de poltie')
+    else:
+        await ctx.send(' will be executed soon. I am making the electric chair ready.')
 
 bot.run(TOKEN)
