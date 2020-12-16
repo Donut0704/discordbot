@@ -336,4 +336,5 @@ async def rules(ctx):
         title='The rules', description="Je kunt de regels vinden in <#"+RULES_CHANNEL+">. Vergeet niet te checken.", color=0xF1F014)
     await ctx.channel.send(embed=embedVar)
 
+
 bot.run(TOKEN)
