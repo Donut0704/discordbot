@@ -18,6 +18,8 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 giphy_token = os.getenv('giphy_api_key')
 CHAT_CHANNEL = os.getenv('chat_channel')
+RULES_CHANNEL = os.getenv('rules_channel')
+LINK = os.getenv('link')
 # 2
 intents = discord.Intents.default()
 intents.members = True
@@ -67,11 +69,12 @@ async def on_member_remove(member):
         + ' Ik hoop dat hij voor hem blijft leven en dat hij misschien de uitnodigingslink krijgt. Dat was het', color=0xF1F014)
     await channel.send(embed=embedVar)
 
-
+'''
 @ bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send('Ongeldige command.')
+'''
 
 
 @ bot.command(name='roll_dice', help='Simuleert een dobbelsteen.')
@@ -89,7 +92,7 @@ async def on_command_error(ctx, error):
         await ctx.send('Gelieve het aantal dobbelstenen en zijdes te specifiëren. Typ !k help roll_dice voor meer info.')
 
 
-@ bot.command(name='99', help='Reageert met een random zin van Brooklyn 99')
+@ bot.command(name='99', help='Reageert met een random zin van Brooklyn 99.')
 async def nine_nine(ctx):
     brooklyn_99_quotes = [
         'Ik ben de menselijke vorm van de 💯 emoji.',
@@ -103,7 +106,7 @@ async def nine_nine(ctx):
     await ctx.send(response)
 
 
-@bot.command(name='simp', help='Zegt hoe simp je bent')
+@bot.command(name='simp', help='Zegt hoe simp je bent.')
 async def simp(ctx, user: discord.Member):
 
     simprate = random.choice(range(0, 101))
@@ -138,12 +141,12 @@ async def on_command_error(ctx, error):
         await ctx.channel.send(embed=embedVar)
 
 
-@bot.command(name='Bjarnismyking', help='Zegt jou wie de koning is')
+@bot.command(name='Bjarnismyking', help='Zegt jou wie de koning is.')
 async def bjarnismyking(ctx):
     await ctx.send(ctx.message.author.mention + " je weet toch wel wie de baas is hier.")
 
 
-@bot.command(name='Bjarn', help="Zegt random zinnen")
+@bot.command(name='Bjarn', help="Zegt random zinnen.")
 async def Bjarn(ctx):
     bjarn_quotes = [
         'Kerst komt eraan, ben je al op zoek naar je cadeautjes? Vergeet ze niet, als je er geen hebt, krijg je zelf geen cadeautjes.',
@@ -155,7 +158,7 @@ async def Bjarn(ctx):
     await ctx.send(antwoord)
 
 
-@bot.command(name='gay', help="Zegt hoe gay je bent")
+@bot.command(name='gay', help="Zegt hoe gay je bent.")
 async def gay(ctx, user: discord.Member):
     gay_quotes = [
         ' ha gaaayyyy!',
@@ -228,7 +231,7 @@ async def score(ctx):
     await ctx.channel.send(embed=embedVar)
 
 
-@bot.command(name='sortinghat', help='Zegt in welke Zweinstein afdeling bent')
+@bot.command(name='sortinghat', help='Zegt in welke Zweinstein afdeling bent.')
 async def sortinghat(ctx, user: discord.Member):
     hat_quotes = [
         'Deze was een moeilijke.',
@@ -320,5 +323,17 @@ async def sus(ctx, user: discord.Member):
 @sus.error
 async def on_command_error(ctx, error):
     await ctx.channel.send(ctx.message.author.mention + ", je kunt toch niet jezelf verdenken?")
+
+
+@bot.command(name='link', help='Creëert een link ')
+async def create_invite(ctx):
+    await ctx.send(LINK)
+
+
+@bot.command(name='rules', help='De regels.')
+async def rules(ctx):
+    embedVar = discord.Embed(
+        title='The rules', description="Je kunt de regels vinden in <#"+RULES_CHANNEL+">. Vergeet niet te checken.", color=0xF1F014)
+    await ctx.channel.send(embed=embedVar)
 
 bot.run(TOKEN)
