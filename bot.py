@@ -395,7 +395,7 @@ async def mortsmortre(ctx):
     await ctx.channel.send(embed=embedVar)
 
 
-@bot.command(name='Avadakedavra', help='Roep de duitsere teken op.')
+@bot.command(name='Avadakedavra', help='Vermoord iemand met deze spreuk.')
 async def Avadakedavra(ctx, user: discord.Member):
     avadaeanswer = random.choice(range(0, 2))
     if avadaeanswer == 0:
