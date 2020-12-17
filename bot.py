@@ -21,6 +21,8 @@ CHAT_CHANNEL = os.getenv('chat_channel')
 RULES_CHANNEL = os.getenv('rules_channel')
 LINK = os.getenv('link')
 ROLE = os.getenv('role')
+guild_name = os.getenv('GUILD_NAME')
+
 # 2
 intents = discord.Intents.default()
 intents.members = True
@@ -49,26 +51,33 @@ async def search_gifs(query):
 
 @bot.event
 async def on_member_join(member):
-    await member.create_dm()
-    await member.dm_channel.send(
-        f'''    Hey {member.name} ,  welcome to my server. My name is Bjarn and I am the king here. '
-            I\'m sure you will respect the rules. Don't forget to read them. '
-            Together with my moderators I will try to make the best server. '
-            I hope you will enjoy your time here. '
-            Greetings your king
-            Bjarn & CO'
-            '''
-    )
+    if member.guild.name == guild_name:
+        await member.create_dm()
+        await member.dm_channel.send(
+            f''' Hey {member.name} ,  welcome to my server. My name is Bjarn and I am the king here. 
+                I\'m sure you will respect the rules. Don't forget to read them. 
+                Together with my moderators I will try to make the best server. 
+                I hope you will enjoy your time here. 
+                Greetings your king
+                Bjarn & CO'
+                '''
+        )
+    else:
+        await member.create_dm()
+        await member.dm_channel.send(
+            f'Hey {member.name} ,  welkom in onze server. Ik hoop dat je veel plezier beleeft.'
+        )
 
 
 @bot.event
 async def on_member_remove(member):
-    channel = bot.get_channel(int(CHAT_CHANNEL))
-    embedVar = discord.Embed(
-        title="Player left", description=member.mention+', heeft net de server verlaten, wat een loser.'
-        + ' Hij zal nu een slecht leven hebben. Hij zal de hele dag huilen omdat hij deze fout heeft gemaakt'
-        + ' Ik hoop dat hij voor hem blijft leven en dat hij misschien de uitnodigingslink krijgt. Dat was het', color=0xF1F014)
-    await channel.send(embed=embedVar)
+    if member.guild.name == guild_name:
+        channel = bot.get_channel(int(CHAT_CHANNEL))
+        embedVar = discord.Embed(
+            title="Player left", description=member.mention+', heeft net de server verlaten, wat een loser.'
+            + ' Hij zal nu een slecht leven hebben. Hij zal de hele dag huilen omdat hij deze fout heeft gemaakt'
+            + ' Ik hoop dat hij voor hem blijft leven en dat hij misschien de uitnodigingslink krijgt. Dat was het', color=0xF1F014)
+        await channel.send(embed=embedVar)
 
 
 @ bot.event
@@ -150,7 +159,7 @@ async def bjarnismyking(ctx):
 async def Bjarn(ctx):
     bjarn_quotes = [
         'Kerst komt eraan, ben je al op zoek naar je cadeautjes? Vergeet ze niet, als je er geen hebt, krijg je zelf geen cadeautjes.',
-        'Jouw koningin is toegekomen.',
+        'Jouw koning is toegekomen.',
         'Hoe is je dag?',
         'Ja'
     ]
@@ -327,21 +336,36 @@ async def on_command_error(ctx, error):
 
 @bot.command(name='link', help='Creëert een link ')
 async def create_invite(ctx):
-    await ctx.send(LINK)
+    if ctx.message.guild.name == guild_name:
+        await ctx.send(LINK)
+    else:
+        newlink = await ctx.channel.create_invite(max_age=300)
+        await ctx.send(newlink)
 
 
 @bot.command(name='rules', help='De regels.')
 async def rules(ctx):
-    embedVar = discord.Embed(
-        title='The rules', description="Je kunt de regels vinden in <#"+RULES_CHANNEL+">. Vergeet niet te checken.", color=0xF1F014)
-    await ctx.channel.send(embed=embedVar)
+    if ctx.message.guild.name == guild_name:
+        embedVar = discord.Embed(
+            title='The rules', description="Je kunt de regels vinden in <#"+RULES_CHANNEL+">. Vergeet niet te checken.", color=0xF1F014)
+        await ctx.channel.send(embed=embedVar)
+    else:
+        embedVar = discord.Embed(
+            title='The rules', description="Er zijn geen regels luister gewoon naar elkaar. Wat dacht je misschien, dat we in een strenge server zaten?", color=0xF1F014)
+        await ctx.channel.send(embed=embedVar)
 
 
 @bot.command(name='loser', help='Een toffe command.')
 async def newrole(ctx):
-    role = ctx.guild.get_role(int(ROLE))
-    await ctx.author.add_roles(role)
-    await ctx.send(ctx.message.author.mention+', jij bent een loser! Waarom probeerde je deze command? Nu heb je de loser role.')
+    if ctx.message.guild.name == guild_name:
+        await ctx.send('test')
+        role = ctx.guild.get_role(int(ROLE))
+        await ctx.author.add_roles(role)
+        await ctx.send(ctx.message.author.mention+', jij bent een loser! Waarom probeerde je deze command? Nu heb je de loser role.')
+    else:
+        role = await ctx.guild.create_role(name='Loser', colour=discord.Colour(0xFB00F3), mentionable=True)
+        await ctx.author.add_roles(role)
+        await ctx.send(ctx.message.author.mention+', jij bent een loser! Waarom probeerde je deze command? Nu heb je de loser role.')
 
 
 @bot.command(name='execute', help='iemand executeren')
@@ -351,7 +375,7 @@ async def execute(ctx, user: discord.Member):
         await ctx.send(user.mention+' is een goed persoon.  Ik kan dit niet tolereren.\n \n' +
                        ctx.message.author.mention + ' is gearresteerd door de poltie')
     else:
-        await ctx.send(user.mention+' will be executed soon. I am making the electric chair ready.')
+        await ctx.send(user.mention+' zal binnenkort worden uitgevoerd. Ik maak de elektrische stoel al klaar.')
 
 
 @execute.error
@@ -362,5 +386,32 @@ async def on_command_error(ctx, error):
                        ctx.message.author.mention + ' is gearresteerd door de poltie')
     else:
         await ctx.send(' will be executed soon. I am making the electric chair ready.')
+
+
+@bot.command(name='mortsmortre', help='Roep de duitsere teken op.')
+async def mortsmortre(ctx):
+    embedVar = discord.Embed(
+        title="Dark sign", description=ctx.message.author.mention+" heeft de duistere teken opgeroept.", color=0xCD4118)
+    await ctx.channel.send(embed=embedVar)
+
+
+@bot.command(name='Avadakedavra', help='Roep de duitsere teken op.')
+async def Avadakedavra(ctx, user: discord.Member):
+    avadaeanswer = random.choice(range(0, 2))
+    if avadaeanswer == 0:
+        embedVar = discord.Embed(
+            title="Avada Kedavra", description=ctx.message.author.mention+" vermoordde "+user.mention+" met de doodsvloek. Jij vuile dooddoener. Voldemart is alang dood.", color=0x24CD1D)
+        await ctx.channel.send(embed=embedVar)
+    if avadaeanswer == 1:
+        embedVar = discord.Embed(
+            title="Avada Kedavra", description=ctx.message.author.mention+" probeerde "+user.mention+"te vermoorden, maar vergat dat zijn stok kapoy was en blies zijn hand op.", color=0x24CD1D)
+        await ctx.channel.send(embed=embedVar)
+
+
+@Avadakedavra.error
+async def on_command_error(ctx, error):
+    embedVar = discord.Embed(
+        title="Avada Kedavra", description=ctx.message.author.mention+" probeerde te vermoorden, maar vergat dat zijn stok kapoy was en blies zijn hand op.", color=0x24CD1D)
+    await ctx.channel.send(embed=embedVar)
 
 bot.run(TOKEN)
