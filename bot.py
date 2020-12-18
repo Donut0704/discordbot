@@ -400,18 +400,18 @@ async def Avadakedavra(ctx, user: discord.Member):
     avadaeanswer = random.choice(range(0, 2))
     if avadaeanswer == 0:
         embedVar = discord.Embed(
-            title="Avada Kedavra", description=ctx.message.author.mention+" vermoordde "+user.mention+" met de doodsvloek. Jij vuile dooddoener. Voldemart is alang dood.", color=0x24CD1D)
+            title="Avada Kedavra", description=ctx.message.author.mention+" vermoordde "+user.mention+" met de doodsvloek. Jij vuile dooddoener. Voldemort is alang dood.", color=0x24CD1D)
         await ctx.channel.send(embed=embedVar)
     if avadaeanswer == 1:
         embedVar = discord.Embed(
-            title="Avada Kedavra", description=ctx.message.author.mention+" probeerde "+user.mention+"te vermoorden, maar vergat dat zijn stok kapoy was en blies zijn hand op.", color=0x24CD1D)
+            title="Avada Kedavra", description=ctx.message.author.mention+" probeerde "+user.mention+" te vermoorden, maar vergat dat zijn stok kapot was en blies zijn hand op.", color=0x24CD1D)
         await ctx.channel.send(embed=embedVar)
 
 
 @Avadakedavra.error
 async def on_command_error(ctx, error):
     embedVar = discord.Embed(
-        title="Avada Kedavra", description=ctx.message.author.mention+" probeerde te vermoorden, maar vergat dat zijn stok kapoy was en blies zijn hand op.", color=0x24CD1D)
+        title="Avada Kedavra", description=ctx.message.author.mention+" probeerde te vermoorden, maar vergat dat zijn stok kapot was en blies zijn hand op.", color=0x24CD1D)
     await ctx.channel.send(embed=embedVar)
 
 bot.run(TOKEN)
