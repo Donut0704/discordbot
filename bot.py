@@ -22,7 +22,6 @@ RULES_CHANNEL = os.getenv('rules_channel')
 LINK = os.getenv('link')
 ROLE = os.getenv('role')
 guild_name = os.getenv('GUILD_NAME')
-guild_name2 = os.getenv('GUILD_NAME2')
 
 # 2
 intents = discord.Intents.default()
@@ -415,14 +414,5 @@ async def on_command_error(ctx, error):
         title="Avada Kedavra", description=ctx.message.author.mention+" probeerde te vermoorden, maar vergat dat zijn stok kapot was en blies zijn hand op.", color=0x24CD1D)
     await ctx.channel.send(embed=embedVar)
 
-
-@bot.command(name='sex', help='gebruik dit niet')
-async def dm(ctx):
-    if ctx.message.guild.name == guild_name2:
-        await ctx.message.channel.send("Wie denk je wel dat ik ben? Ik heb een link gestuurd zodat je alleen je behoeftes kunt doen.")
-        channel = await ctx.message.author.create_dm()
-        await channel.send(" https://www.pornhub.com/")
-    else:
-        await ctx.message.channel.send("Wie denk je wel dat ik ben? Doe je behoeftes niet hier. :face_with_symbols_over_mouth: ")
 
 bot.run(TOKEN)
