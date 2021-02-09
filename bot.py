@@ -80,6 +80,21 @@ async def on_member_remove(member):
         await channel.send(embed=embedVar)
 
 
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+
+    rythm_quotes = [
+        'Good job Rythm!',
+        'Je bent de beste Rythm',
+        'Toffe muziek Rythm'
+    ]
+    if message.content.startswith('!p'):
+        response = random.choice(rythm_quotes)
+        await message.channel.send(response)
+
+
 @ bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
