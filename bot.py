@@ -21,7 +21,9 @@ CHAT_CHANNEL = os.getenv('chat_channel')
 RULES_CHANNEL = os.getenv('rules_channel')
 LINK = os.getenv('link')
 ROLE = os.getenv('role')
+ROLE2 = os.getenv('role2')
 guild_name = os.getenv('GUILD_NAME')
+guild_name2 = os.getenv('GUILD_NAME2')
 
 # 2
 intents = discord.Intents.default()
@@ -79,11 +81,12 @@ async def on_member_remove(member):
             + ' Ik hoop dat hij voor hem blijft leven en dat hij misschien de uitnodigingslink krijgt. Dat was het', color=0xF1F014)
         await channel.send(embed=embedVar)
 
-
+"""
 @ bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send('Ongeldige command.')
+"""
 
 
 @ bot.command(name='roll_dice', help='Simuleert een dobbelsteen.')
@@ -358,13 +361,12 @@ async def rules(ctx):
 @bot.command(name='loser', help='Een toffe command.')
 async def newrole(ctx):
     if ctx.message.guild.name == guild_name:
-        await ctx.send('test')
         role = ctx.guild.get_role(int(ROLE))
         await ctx.author.add_roles(role)
         await ctx.send(ctx.message.author.mention+', jij bent een loser! Waarom probeerde je deze command? Nu heb je de loser role.')
-    else:
-        role = await ctx.guild.create_role(name='Loser', colour=discord.Colour(0xFB00F3), mentionable=True)
-        await ctx.author.add_roles(role)
+    elif ctx.message.guild.name == guild_name2:
+        role2 = ctx.guild.get_role(int(ROLE2))
+        await ctx.author.add_roles(role2)
         await ctx.send(ctx.message.author.mention+', jij bent een loser! Waarom probeerde je deze command? Nu heb je de loser role.')
 
 
