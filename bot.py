@@ -160,7 +160,7 @@ async def bjarnismyking(ctx):
 @bot.command(name='Bjarn', help="Zegt random zinnen.")
 async def Bjarn(ctx):
     bjarn_quotes = [
-        'Kerst komt eraan, ben je al op zoek naar je cadeautjes? Vergeet ze niet, als je er geen hebt, krijg je zelf geen cadeautjes.',
+        'Pasen komt eraan, ben je al op zoek naar je paaseitjes? Vergeet ze niet, als je er geen hebt, krijg je zelf geen paaseitjes.',
         'Jouw koning is toegekomen.',
         'Hoe is je dag?',
         'Ja'
