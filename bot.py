@@ -81,12 +81,11 @@ async def on_member_remove(member):
             + ' Ik hoop dat hij voor hem blijft leven en dat hij misschien de uitnodigingslink krijgt. Dat was het', color=0xF1F014)
         await channel.send(embed=embedVar)
 
-"""
+
 @ bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send('Ongeldige command.')
-"""
 
 
 @ bot.command(name='roll_dice', help='Simuleert een dobbelsteen.')
