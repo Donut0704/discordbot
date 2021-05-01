@@ -491,4 +491,312 @@ async def rps(ctx):
         await ctx.send("Gebruik schaar, papier, steen")
 
 
+@bot.command(name="tictactoe", help="Het beroemde spel Tictactoe")
+async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
+    if ctx.message.guild.name == guild_name:
+        global count
+        global player1
+        global player2
+        global turn
+        global gameOver
+
+        if gameOver:
+            global board
+            board = [":white_large_square:", ":white_large_square:", ":white_large_square:",
+                     ":white_large_square:", ":white_large_square:", ":white_large_square:",
+                     ":white_large_square:", ":white_large_square:", ":white_large_square:"]
+            turn = ""
+            gameOver = False
+            count = 0
+
+            player1 = p1
+            player2 = p2
+
+            # print the board
+            line = ""
+            for x in range(len(board)):
+                if x == 2 or x == 5 or x == 8:
+                    line += " " + board[x]
+                    await ctx.send(line)
+                    line = ""
+                else:
+                    line += " " + board[x]
+
+            # determine who goes first
+            num = random.randint(1, 2)
+            if num == 1:
+                turn = player1
+                await ctx.send("Het is <@" + str(player1.id) + "> beurt.")
+            elif num == 2:
+                turn = player2
+                await ctx.send("Het is <@" + str(player2.id) + ">beurt.")
+        else:
+            await ctx.send("Een spel is nog bezig! Eindig deze eerst voordat je een nieuwe begint.")
+    elif ctx.message.guild.name == guild_name2:
+        global count2
+        global player3
+        global player4
+        global turn2
+        global gameOver2
+
+        if gameOver2:
+            global board2
+            board2 = [":white_large_square:", ":white_large_square:", ":white_large_square:",
+                      ":white_large_square:", ":white_large_square:", ":white_large_square:",
+                      ":white_large_square:", ":white_large_square:", ":white_large_square:"]
+            turn2 = ""
+            gameOver2 = False
+            count2 = 0
+
+            player3 = p1
+            player4 = p2
+
+            # print the board
+            line2 = ""
+            for x in range(len(board2)):
+                if x == 2 or x == 5 or x == 8:
+                    line2 += " " + board2[x]
+                    await ctx.send(line2)
+                    line2 = ""
+                else:
+                    line2 += " " + board2[x]
+
+            # determine who goes first
+            num2 = random.randint(1, 2)
+            if num2 == 1:
+                turn2 = player3
+                await ctx.send("Het is <@" + str(player3.id) + "> beurt.")
+            elif num2 == 2:
+                turn2 = player4
+                await ctx.send("Het is <@" + str(player4.id) + ">beurt.")
+        else:
+            await ctx.send("Een spel is nog bezig! Eindig deze eerst voordat je een nieuwe begint.")
+    else:
+        global count3
+        global player5
+        global player6
+        global turn3
+        global gameOver3
+
+        if gameOver3:
+            global board3
+            board3 = [":white_large_square:", ":white_large_square:", ":white_large_square:",
+                      ":white_large_square:", ":white_large_square:", ":white_large_square:",
+                      ":white_large_square:", ":white_large_square:", ":white_large_square:"]
+            turn3 = ""
+            gameOver3 = False
+            count3 = 0
+
+            player5 = p1
+            player6 = p2
+
+            # print the board
+            line3 = ""
+            for x in range(len(board3)):
+                if x == 2 or x == 5 or x == 8:
+                    line3 += " " + board3[x]
+                    await ctx.send(line3)
+                    line3 = ""
+                else:
+                    line3 += " " + board3[x]
+
+            # determine who goes first
+            num3 = random.randint(1, 2)
+            if num3 == 1:
+                turn3 = player5
+                await ctx.send("Het is <@" + str(player5.id) + "> beurt.")
+            elif num3 == 2:
+                turn3 = player6
+                await ctx.send("Het is <@" + str(player6.id) + ">beurt.")
+        else:
+            await ctx.send("Een spel is nog bezig! Eindig deze eerst voordat je een nieuwe begint.")
+
+
+@bot.command(name="place", help="Gebruik dit om jouw symbool te plaatsen bij het spel Tictactoe")
+async def place(ctx, pos: int):
+    if ctx.message.guild.name == guild_name:
+        global turn
+        global player1
+        global player2
+        global board
+        global count
+        global gameOver
+
+        if not gameOver:
+            mark = ""
+            if turn == ctx.author:
+                if turn == player1:
+                    mark = ":regional_indicator_x:"
+                elif turn == player2:
+                    mark = ":o2:"
+                if 0 < pos < 10 and board[pos - 1] == ":white_large_square:":
+                    board[pos - 1] = mark
+                    count += 1
+
+                    # print the board
+                    line = ""
+                    for x in range(len(board)):
+                        if x == 2 or x == 5 or x == 8:
+                            line += " " + board[x]
+                            await ctx.send(line)
+                            line = ""
+                        else:
+                            line += " " + board[x]
+                    # switch turns
+                    if turn == player1:
+                        turn = player2
+                        await ctx.send("Het is <@" + str(player2.id) + "> beurt.")
+                    elif turn == player2:
+                        turn = player1
+                        await ctx.send("Het is <@" + str(player1.id) + "> beurt.")
+
+                    checkWinner(winningConditions, mark)
+                    if gameOver == True:
+                        await ctx.send(mark + " wint! :partying_face:")
+                    elif count >= 9:
+                        gameOver = True
+                        await ctx.send("Het is gelijkspel!")
+
+                else:
+                    await ctx.send("Wees zeker een getal te kiezen tussen 1 en 9(inclusief) en een niet gemarkeerde tegel.")
+            else:
+                await ctx.send("Het is niet jouw beurt.")
+        else:
+            await ctx.send("Start alstublieft een nieuwe spel met de !k tictactoe command.")
+
+    elif ctx.message.guild.name == guild_name2:
+        global turn2
+        global player3
+        global player4
+        global board2
+        global count2
+        global gameOver2
+
+        if not gameOver2:
+            mark2 = ""
+            if turn2 == ctx.author:
+                if turn2 == player3:
+                    mark2 = ":regional_indicator_x:"
+                elif turn2 == player4:
+                    mark2 = ":o2:"
+                if 0 < pos < 10 and board2[pos - 1] == ":white_large_square:":
+                    board2[pos - 1] = mark2
+                    count2 += 1
+
+                    # print the board
+                    line2 = ""
+                    for x in range(len(board2)):
+                        if x == 2 or x == 5 or x == 8:
+                            line2 += " " + board2[x]
+                            await ctx.send(line2)
+                            line2 = ""
+                        else:
+                            line2 += " " + board2[x]
+                    # switch turns
+                    if turn2 == player3:
+                        turn2 = player4
+                        await ctx.send("Het is <@" + str(player4.id) + "> beurt.")
+                    elif turn2 == player4:
+                        turn2 = player3
+                        await ctx.send("Het is <@" + str(player3.id) + "> beurt.")
+
+                    checkWinner2(winningConditions, mark2)
+                    if gameOver2 == True:
+                        await ctx.send(mark2 + " wint! :partying_face:")
+                    elif count2 >= 9:
+                        gameOver2 = True
+                        await ctx.send("Het is gelijkspel!")
+
+                else:
+                    await ctx.send("Wees zeker een getal te kiezen tussen 1 en 9(inclusief) en een niet gemarkeerde tegel.")
+            else:
+                await ctx.send("Het is niet jouw beurt.")
+        else:
+            await ctx.send("Start alstublieft een nieuwe spel met de !k tictactoe command.")
+
+    else:
+        global turn3
+        global player5
+        global player6
+        global board3
+        global count3
+        global gameOver3
+        if not gameOver3:
+            mark3 = ""
+            if turn3 == ctx.author:
+                if turn3 == player5:
+                    mark3 = ":regional_indicator_x:"
+                elif turn3 == player6:
+                    mark3 = ":o2:"
+                if 0 < pos < 10 and board3[pos - 1] == ":white_large_square:":
+                    board3[pos - 1] = mark3
+                    count3 += 1
+                    # print the board
+                    line3 = ""
+                    for x in range(len(board3)):
+                        if x == 2 or x == 5 or x == 8:
+                            line3 += " " + board3[x]
+                            await ctx.send(line3)
+                            line3 = ""
+                        else:
+                            line3 += " " + board3[x]
+                    # switch turns
+                    if turn3 == player5:
+                        turn3 = player6
+                        await ctx.send("Het is <@" + str(player6.id) + "> beurt.")
+                    elif turn3 == player6:
+                        turn3 = player5
+                        await ctx.send("Het is <@" + str(player5.id) + "> beurt.")
+
+                    checkWinner3(winningConditions, mark3)
+                    if gameOver3 == True:
+                        await ctx.send(mark3 + " wint! :partying_face:")
+                    elif count3 >= 9:
+                        gameOver3 = True
+                        await ctx.send("Het is gelijkspel!")
+                else:
+                    await ctx.send("Wees zeker een getal te kiezen tussen 1 en 9(inclusief) en een niet gemarkeerde tegel.")
+            else:
+                await ctx.send("Het is niet jouw beurt.")
+        else:
+            await ctx.send("Start alstublieft een nieuwe spel met de !k tictactoe command.")
+
+
+def checkWinner(winningConditions, mark):
+    global gameOver
+    for condition in winningConditions:
+        if board[condition[0]] == mark and board[condition[1]] == mark and board[condition[2]] == mark:
+            gameOver = True
+
+
+def checkWinner2(winningConditions, mark2):
+    global gameOver2
+    for condition in winningConditions:
+        if board2[condition[0]] == mark2 and board2[condition[1]] == mark2 and board2[condition[2]] == mark2:
+            gameOver2 = True
+
+
+def checkWinner3(winningConditions, mark3):
+    global gameOver3
+    for condition in winningConditions:
+        if board3[condition[0]] == mark3 and board3[condition[1]] == mark3 and board3[condition[2]] == mark3:
+            gameOver3 = True
+
+
+@tictactoe.error
+async def tictactoe_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("Mention 2 spelers voor deze command alstublieft")
+    elif isinstance(error, commands.BadArgument):
+        await ctx.send("Wees zeker spelers te mentionen/pingen (bv. <@786996376802164776>), alstublieft.")
+
+
+@place.error
+async def place_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("Voer alstublieft een positie in om deze te markeren, alstublieft.")
+    elif isinstance(error, commands.BadArgument):
+        await ctx.send("Wees zeker een getal in te voeren, alstublieft.")
+
+
 bot.run(TOKEN)
