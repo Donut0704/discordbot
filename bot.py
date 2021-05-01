@@ -31,6 +31,42 @@ intents.members = True
 bot = commands.Bot(command_prefix='!k ',
                    guild_subscriptions=True, intents=intents)
 
+# game variables
+
+player1 = ""
+player2 = ""
+turn = ""
+gameOver = True
+
+board = []
+
+winningConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+]
+# game variables2
+
+player3 = ""
+player4 = ""
+turn2 = ""
+gameOver2 = True
+
+board2 = []
+# game variables3
+
+player5 = ""
+player6 = ""
+turn3 = ""
+gameOver3 = True
+
+board3 = []
+
 
 @bot.event
 async def on_ready():
@@ -414,6 +450,45 @@ async def on_command_error(ctx, error):
     embedVar = discord.Embed(
         title="Avada Kedavra", description=ctx.message.author.mention+" probeerde te vermoorden, maar vergat dat zijn stok kapot was en blies zijn hand op.", color=0x24CD1D)
     await ctx.channel.send(embed=embedVar)
+
+
+@bot.command(name="rps", help="Speel het spel steen, papier, schaar")
+async def rps(ctx):
+    rpsGame = ['steen', 'papier', 'schaar']
+    await ctx.send(f"Steen, papier of schaar? Neem een wijze keuze...")
+
+    def check(msg):
+        return msg.author == ctx.author and msg.channel == ctx.channel and msg.content.lower() in rpsGame
+
+    user_choice = (await bot.wait_for('message', check=check)).content
+
+    comp_choice = random.choice(rpsGame)
+    if user_choice == 'steen':
+        if comp_choice == 'steen':
+            await ctx.send(f'Nou, dat was raar. We eindigden gelijk.\nJouw keuze: {user_choice}\nMijn keuze: {comp_choice}')
+        elif comp_choice == 'papier':
+            await ctx.send(f'Goed geprobeerd, maar deze keer heb ik gewonnen!!\nJouw keuze: {user_choice}\nMijn keuze: {comp_choice}')
+        elif comp_choice == 'schaar':
+            await ctx.send(f"Aw, je hebt me verslaan. Dit gaat niet meer gebeuren!\nJouw keuze: {user_choice}\nMijn keuze: {comp_choice}")
+
+    elif user_choice == 'papier':
+        if comp_choice == 'steen':
+            await ctx.send(f'Verslaat de pen het zwaard? Meer zoals het papier de rots verslaat !!\nJouw keuze: {user_choice}\nMijn keuze: {comp_choice}')
+        elif comp_choice == 'papier':
+            await ctx.send(f'Oh, gek. We eindigden gelijk. Ik daag je uit voor een herkansing !!\nJouw keuze: {user_choice}\nMijn keuze: {comp_choice}')
+        elif comp_choice == 'schaar':
+            await ctx.send(f"Ach man, het is je echt gelukt om me te verslaan.\nJouw keuze: {user_choice}\nMijn keuze: {comp_choice}")
+
+    elif user_choice == 'schaar':
+        if comp_choice == 'steen':
+            await ctx.send(f'HAHA !! Ik heb je net verpletterd !! Ik heb steen !!\nJouw keuze: {user_choice}\nMijn keuze: {comp_choice}')
+        elif comp_choice == 'papier':
+            await ctx.send(f'Bruh. >: |\nJouw keuze: {user_choice}\nMijn keuze: {comp_choice}')
+        elif comp_choice == 'schaar':
+            await ctx.send(f"Nou ja, we eindigden gelijk.\nJouw keuze: {user_choice}\nMijn keuze: {comp_choice}")
+
+    else:
+        await ctx.send("Gebruik schaar, papier, steen")
 
 
 bot.run(TOKEN)
