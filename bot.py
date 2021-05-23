@@ -37,7 +37,7 @@ player1 = ""
 player2 = ""
 turn = ""
 gameOver = True
-
+bot1 = False
 board = []
 
 winningConditions = [
@@ -56,7 +56,7 @@ player3 = ""
 player4 = ""
 turn2 = ""
 gameOver2 = True
-
+bot2 = False
 board2 = []
 # game variables3
 
@@ -64,7 +64,7 @@ player5 = ""
 player6 = ""
 turn3 = ""
 gameOver3 = True
-
+bot3 = False
 board3 = []
 
 
@@ -92,10 +92,10 @@ async def on_member_join(member):
     if member.guild.name == guild_name:
         await member.create_dm()
         await member.dm_channel.send(
-            f''' Hey {member.name} ,  welcome to my server. My name is Bjarn and I am the king here. 
-                I\'m sure you will respect the rules. Don't forget to read them. 
-                Together with my moderators I will try to make the best server. 
-                I hope you will enjoy your time here. 
+            f''' Hey {member.name} ,  welcome to my server. My name is Bjarn and I am the king here.
+                I\'m sure you will respect the rules. Don't forget to read them.
+                Together with my moderators I will try to make the best server.
+                I hope you will enjoy your time here.
                 Greetings your king
                 Bjarn & CO'
                 '''
@@ -522,14 +522,23 @@ async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
                 else:
                     line += " " + board[x]
 
-            # determine who goes first
-            num = random.randint(1, 2)
-            if num == 1:
-                turn = player1
-                await ctx.send("Het is <@" + str(player1.id) + "> beurt.")
-            elif num == 2:
+            if str(player1) == "Bjarn#3726":
                 turn = player2
                 await ctx.send("Het is <@" + str(player2.id) + ">beurt.")
+
+            elif str(player2) == "Bjarn#3726":
+                turn = player1
+                await ctx.send("Het is <@" + str(player1.id) + "> beurt.")
+
+            else:
+                # determine who goes first
+                num = random.randint(1, 2)
+                if num == 1:
+                    turn = player1
+                    await ctx.send("Het is <@" + str(player1.id) + "> beurt.")
+                elif num == 2:
+                    turn = player2
+                    await ctx.send("Het is <@" + str(player2.id) + ">beurt.")
         else:
             await ctx.send("Een spel is nog bezig! Eindig deze eerst voordat je een nieuwe begint.")
     elif ctx.message.guild.name == guild_name2:
@@ -561,14 +570,23 @@ async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
                 else:
                     line2 += " " + board2[x]
 
-            # determine who goes first
-            num2 = random.randint(1, 2)
-            if num2 == 1:
-                turn2 = player3
-                await ctx.send("Het is <@" + str(player3.id) + "> beurt.")
-            elif num2 == 2:
+            if str(player3) == "Bjarn#3726":
                 turn2 = player4
                 await ctx.send("Het is <@" + str(player4.id) + ">beurt.")
+
+            elif str(player4) == "Bjarn#3726":
+                turn2 = player3
+                await ctx.send("Het is <@" + str(player3.id) + "> beurt.")
+
+            else:
+                # determine who goes first
+                num2 = random.randint(1, 2)
+                if num2 == 1:
+                    turn2 = player3
+                    await ctx.send("Het is <@" + str(player3.id) + "> beurt.")
+                elif num2 == 2:
+                    turn2 = player4
+                    await ctx.send("Het is <@" + str(player4.id) + ">beurt.")
         else:
             await ctx.send("Een spel is nog bezig! Eindig deze eerst voordat je een nieuwe begint.")
     else:
@@ -589,7 +607,6 @@ async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
 
             player5 = p1
             player6 = p2
-
             # print the board
             line3 = ""
             for x in range(len(board3)):
@@ -599,15 +616,23 @@ async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
                     line3 = ""
                 else:
                     line3 += " " + board3[x]
-
-            # determine who goes first
-            num3 = random.randint(1, 2)
-            if num3 == 1:
-                turn3 = player5
-                await ctx.send("Het is <@" + str(player5.id) + "> beurt.")
-            elif num3 == 2:
+            if str(player5) == "Bjarn#3726":
                 turn3 = player6
                 await ctx.send("Het is <@" + str(player6.id) + ">beurt.")
+
+            elif str(player6) == "Bjarn#3726":
+                turn3 = player5
+                await ctx.send("Het is <@" + str(player5.id) + "> beurt.")
+
+            else:
+                # determine who goes first
+                num3 = random.randint(1, 2)
+                if num3 == 1:
+                    turn3 = player5
+                    await ctx.send("Het is <@" + str(player5.id) + "> beurt.")
+                elif num3 == 2:
+                    turn3 = player6
+                    await ctx.send("Het is <@" + str(player6.id) + ">beurt.")
         else:
             await ctx.send("Een spel is nog bezig! Eindig deze eerst voordat je een nieuwe begint.")
 
@@ -621,10 +646,11 @@ async def place(ctx, pos: int):
         global board
         global count
         global gameOver
+        global bot1
 
         if not gameOver:
             mark = ""
-            if turn == ctx.author:
+            if turn == ctx.author or bot1 == True:
                 if turn == player1:
                     mark = ":regional_indicator_x:"
                 elif turn == player2:
@@ -645,17 +671,31 @@ async def place(ctx, pos: int):
                     # switch turns
                     if turn == player1:
                         turn = player2
+                        bot1 = False
                         await ctx.send("Het is <@" + str(player2.id) + "> beurt.")
                     elif turn == player2:
                         turn = player1
+                        bot1 = False
                         await ctx.send("Het is <@" + str(player1.id) + "> beurt.")
 
                     checkWinner(winningConditions, mark)
                     if gameOver == True:
+                        bot1 = False
                         await ctx.send(mark + " wint! :partying_face:")
                     elif count >= 9:
+                        bot1 = False
                         gameOver = True
                         await ctx.send("Het is gelijkspel!")
+
+                    if str(turn) == "Bjarn#3726" and gameOver == False:
+                        botsnumber1 = random.choice(range(1, 10))
+                        while board[botsnumber1-1] != ":white_large_square:":
+                            botsnumber1 = random.choice(range(1, 10))
+
+                        if board[botsnumber1-1] == ":white_large_square:":
+                            await ctx.send("!k place " + str(botsnumber1))
+                            bot1 = True
+                            await place(ctx, botsnumber1)
 
                 else:
                     await ctx.send("Wees zeker een getal te kiezen tussen 1 en 9(inclusief) en een niet gemarkeerde tegel.")
@@ -671,10 +711,11 @@ async def place(ctx, pos: int):
         global board2
         global count2
         global gameOver2
+        global bot2
 
         if not gameOver2:
             mark2 = ""
-            if turn2 == ctx.author:
+            if turn2 == ctx.author or bot2 == True:
                 if turn2 == player3:
                     mark2 = ":regional_indicator_x:"
                 elif turn2 == player4:
@@ -695,17 +736,31 @@ async def place(ctx, pos: int):
                     # switch turns
                     if turn2 == player3:
                         turn2 = player4
+                        bot2 = False
                         await ctx.send("Het is <@" + str(player4.id) + "> beurt.")
                     elif turn2 == player4:
                         turn2 = player3
+                        bot2 = False
                         await ctx.send("Het is <@" + str(player3.id) + "> beurt.")
 
                     checkWinner2(winningConditions, mark2)
                     if gameOver2 == True:
+                        bot2 = False
                         await ctx.send(mark2 + " wint! :partying_face:")
                     elif count2 >= 9:
                         gameOver2 = True
+                        bot2 = False
                         await ctx.send("Het is gelijkspel!")
+
+                    if str(turn2) == "Bjarn#3726" and gameOver2 == False:
+                        botsnumber2 = random.choice(range(1, 10))
+                        while board2[botsnumber2-1] != ":white_large_square:":
+                            botsnumber2 = random.choice(range(1, 10))
+
+                        if board2[botsnumber2-1] == ":white_large_square:":
+                            await ctx.send("!k place " + str(botsnumber2))
+                            bot2 = True
+                            await place(ctx, botsnumber2)
 
                 else:
                     await ctx.send("Wees zeker een getal te kiezen tussen 1 en 9(inclusief) en een niet gemarkeerde tegel.")
@@ -721,9 +776,11 @@ async def place(ctx, pos: int):
         global board3
         global count3
         global gameOver3
+        global bot3
+
         if not gameOver3:
             mark3 = ""
-            if turn3 == ctx.author:
+            if turn3 == ctx.author or bot3 == True:
                 if turn3 == player5:
                     mark3 = ":regional_indicator_x:"
                 elif turn3 == player6:
@@ -743,17 +800,32 @@ async def place(ctx, pos: int):
                     # switch turns
                     if turn3 == player5:
                         turn3 = player6
+                        bot3 = False
                         await ctx.send("Het is <@" + str(player6.id) + "> beurt.")
                     elif turn3 == player6:
                         turn3 = player5
+                        bot3 = False
                         await ctx.send("Het is <@" + str(player5.id) + "> beurt.")
 
                     checkWinner3(winningConditions, mark3)
                     if gameOver3 == True:
                         await ctx.send(mark3 + " wint! :partying_face:")
+                        bot3 = False
                     elif count3 >= 9:
                         gameOver3 = True
+                        bot3 = False
                         await ctx.send("Het is gelijkspel!")
+
+                    if str(turn3) == "Bjarn#3726" and gameOver3 == False:
+                        botsnumber3 = random.choice(range(1, 10))
+                        while board3[botsnumber3-1] != ":white_large_square:":
+                            botsnumber3 = random.choice(range(1, 10))
+
+                        if board3[botsnumber3-1] == ":white_large_square:":
+                            await ctx.send("!k place " + str(botsnumber3))
+                            bot3 = True
+                            await place(ctx, botsnumber3)
+
                 else:
                     await ctx.send("Wees zeker een getal te kiezen tussen 1 en 9(inclusief) en een niet gemarkeerde tegel.")
             else:
@@ -783,7 +855,7 @@ def checkWinner3(winningConditions, mark3):
             gameOver3 = True
 
 
-@tictactoe.error
+@ tictactoe.error
 async def tictactoe_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Mention 2 spelers voor deze command alstublieft")
@@ -791,7 +863,7 @@ async def tictactoe_error(ctx, error):
         await ctx.send("Wees zeker spelers te mentionen/pingen (bv. <@786996376802164776>), alstublieft.")
 
 
-@place.error
+@ place.error
 async def place_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Voer alstublieft een positie in om deze te markeren, alstublieft.")
